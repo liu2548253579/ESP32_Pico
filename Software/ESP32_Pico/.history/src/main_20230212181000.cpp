@@ -36,7 +36,7 @@
 int freq = 50;      // 频率(20ms周期)
 int channel = 8;    // 通道(高速通道（0 ~ 7）由80MHz时钟驱动，低速通道（8 ~ 15）由 1MHz 时钟驱动。)
 int resolution = 8; // 分辨率
-const int led = 15;
+const int led = 13;
  
 int calculatePWM(int degree)
 { //0-180度
@@ -62,7 +62,7 @@ void loop()
   for (int d = 0; d <= 180; d += 10)
   {
     ledcWrite(channel, calculatePWM(d)); // 输出PWM
-    Serial.printf("value=%d,calcu=%d\r\n", d, calculatePWM(d));
+    Serial.printf("value=%d,calcu=%d\n", d, calculatePWM(d));
     delay(1000);
   }  
 }

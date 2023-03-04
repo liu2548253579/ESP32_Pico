@@ -62,7 +62,7 @@ void loop()
   for (int d = 0; d <= 180; d += 10)
   {
     ledcWrite(channel, calculatePWM(d)); // 输出PWM
-    Serial.printf("value=%d,calcu=%d\r\n", d, calculatePWM(d));
+    Serial.printf("value=%d,calcu=%d\n", d, calculatePWM(d));
     delay(1000);
   }  
 }
