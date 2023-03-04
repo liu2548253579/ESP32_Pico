@@ -27,7 +27,7 @@ void servo_open (int speed,int scale)
   for (int d = 0; d <= 180; d += scale)
   {
     ledcWrite(channel, calculatePWM(d)); // 输出PWM
-    Serial.printf("Opening: value=%d,calcu=%d\r\n", d, calculatePWM(d));
+    // Serial.printf("Opening: value=%d,calcu=%d\r\n", d, calculatePWM(d));
     delay(speed);
   } 
 }
@@ -37,7 +37,7 @@ void servo_close (int speed,int scale)
   for (int d = 180; d >= 0; d -= scale)
   {
     ledcWrite(channel, calculatePWM(d)); // 输出PWM
-    Serial.printf("Closing: value=%d,calcu=%d\r\n", d, calculatePWM(d));
+    // Serial.printf("Closing: value=%d,calcu=%d\r\n", d, calculatePWM(d));
     delay(speed);
   } 
 }
@@ -71,6 +71,7 @@ while(1)
   if(open_flag)
   {
     time_open++;
+    digitalWrite(13,HIGH)
   }
 
   if(time_open>=500)
@@ -108,16 +109,6 @@ if(lid_state==1&&open_flag==0)
 {
 servo_close(1,10);
 lid_state=0;
-}
-
-
-if(lid_state)
-{
-  digitalWrite(13,HIGH);
-}
-else
-{
-  digitalWrite(13,LOW);
 }
 // servo_close(1,10);
 }

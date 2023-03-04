@@ -29,6 +29,7 @@ void servo_open (int speed,int scale)
     ledcWrite(channel, calculatePWM(d)); // 输出PWM
     Serial.printf("Opening: value=%d,calcu=%d\r\n", d, calculatePWM(d));
     delay(speed);
+    
   } 
 }
 

@@ -4,7 +4,6 @@
 UltraSonicDistanceSensor distanceSensor(2, 4);  // Initialize sensor that uses digital pins 13 and 12.
 float distance;//采集的距离
 bool open_flag;//开合标志位
-bool lid_state;
 int time_open;//打开的持续时间
 
 int channel = 8;    // 通道(高速通道（0 ~ 7）由80MHz时钟驱动，低速通道（8 ~ 15）由 1MHz 时钟驱动。)
@@ -27,7 +26,7 @@ void servo_open (int speed,int scale)
   for (int d = 0; d <= 180; d += scale)
   {
     ledcWrite(channel, calculatePWM(d)); // 输出PWM
-    Serial.printf("Opening: value=%d,calcu=%d\r\n", d, calculatePWM(d));
+    // Serial.printf("Opening: value=%d,calcu=%d\r\n", d, calculatePWM(d));
     delay(speed);
   } 
 }
@@ -37,7 +36,7 @@ void servo_close (int speed,int scale)
   for (int d = 180; d >= 0; d -= scale)
   {
     ledcWrite(channel, calculatePWM(d)); // 输出PWM
-    Serial.printf("Closing: value=%d,calcu=%d\r\n", d, calculatePWM(d));
+    // Serial.printf("Closing: value=%d,calcu=%d\r\n", d, calculatePWM(d));
     delay(speed);
   } 
 }
@@ -73,12 +72,12 @@ while(1)
     time_open++;
   }
 
-  if(time_open>=500)
+  if(time_open>=50000)
   {
     time_open=0;open_flag=0;Serial.printf("Close\r\n");
   }
 
-  // if(!open_flag)
+  if(!open_flag)
     vTaskDelay(10);
 }
 }
@@ -90,7 +89,7 @@ void setup()
   Serial.begin(115200);
   ledcSetup(channel, 50, 8); // 设置通道 50hz频率 8bit分辨率
   ledcAttachPin(led, channel);          // 将通道与对应的引脚连接
-  pinMode(13,OUTPUT);         //初始化LED引脚
+  pinMode(13,OUTPUT);
   xTaskCreate(detect_distance,"detect_distance",4096,NULL,1,NULL);
   xTaskCreate(task_center,"task_center",4096,NULL,2,NULL);
 }
@@ -98,26 +97,6 @@ void setup()
 void loop()
 {
 
-if(lid_state==0&&open_flag==1)
-{
 servo_open(1,10);
-lid_state=1;
-}
-
-if(lid_state==1&&open_flag==0)
-{
-servo_close(1,10);
-lid_state=0;
-}
-
-
-if(lid_state)
-{
-  digitalWrite(13,HIGH);
-}
-else
-{
-  digitalWrite(13,LOW);
-}
 // servo_close(1,10);
 }
